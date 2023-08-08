@@ -84,7 +84,7 @@ class App extends Component {
         // Process the result and update the state or perform other actions
         // For example, you can call displayFaceBox() and update user entries
         if (result) {
-          fetch('https://fr-backend-fz83.onrender.com:3000/image', {
+          fetch('https://fr-backend-fz83.onrender.com/image', {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
