@@ -71,7 +71,7 @@ class App extends Component {
 
     // Send the image URL to your backend API endpoint
     fetch('https://fr-backend-fz83.onrender.com/detect-face', {
-      method: 'POST',
+      method: 'post',
       headers: {
         'Content-Type': 'application/json',
       },
