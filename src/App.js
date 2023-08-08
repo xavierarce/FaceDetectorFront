@@ -70,7 +70,7 @@ class App extends Component {
     this.setState({ imageUrl: this.state.input });
 
     // Send the image URL to your backend API endpoint
-    fetch('http://localhost:3000/detect-face', {
+    fetch('https://fr-backend-fz83.onrender.com/detect-face', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ class App extends Component {
         // Process the result and update the state or perform other actions
         // For example, you can call displayFaceBox() and update user entries
         if (result) {
-          fetch('http://localhost:3000/image', {
+          fetch('https://fr-backend-fz83.onrender.com/image', {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
