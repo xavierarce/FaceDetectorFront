@@ -8,6 +8,7 @@ import Register from './components/Register/Register';
 import './App.css'
 import Rank from './components/Rank/Rank';
 import ParticlesBg from 'particles-bg';
+import axios from 'axios';
 
 
 const initialState ={
@@ -68,34 +69,26 @@ class App extends Component {
 
   onPictureSubmit = () => {
     this.setState({ imageUrl: this.state.input });
-
-    // Send the image URL to your backend API endpoint
-    fetch('https://fr-backend-fz83.onrender.com/detect-face', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        imageUrl: this.state.input,
-      }),
+  
+    // Send the image URL to your backend API endpoint using axios
+    axios.post('https://fr-backend-fz83.onrender.com/detect-face', {
+      imageUrl: this.state.input,
     })
-      .then(response => response.json())
-      .then(result => {
+      .then(response => {
+        const result = response.data;
         // Process the result and update the state or perform other actions
         // For example, you can call displayFaceBox() and update user entries
         if (result) {
-          fetch('https://fr-backend-fz83.onrender.com/image', {
-            method: 'put',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              id: this.state.user.id
-            })
+          axios.put('https://fr-backend-fz83.onrender.com/image', {
+            id: this.state.user.id,
           })
-            .then(result => result.json())
-            .then(count => {
-              this.setState(Object.assign(this.state.user, { entries: count }));
+            .then(response => {
+              const count = response.data;
+              this.setState(prevState => ({
+                user: { ...prevState.user, entries: count },
+              }));
             })
-            .catch(console.log);
+            .catch(error => console.log('error', error));
         }
         this.displayFaceBox(this.calculateFaceLocation(result));
       })
