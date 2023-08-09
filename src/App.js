@@ -8,7 +8,6 @@ import Register from './components/Register/Register';
 import './App.css'
 import Rank from './components/Rank/Rank';
 import ParticlesBg from 'particles-bg';
-import axios from 'axios';
 
 
 const initialState ={
@@ -102,6 +101,7 @@ class App extends Component {
       })
       .catch(error => console.log('error', error));
   };
+
 
   onRouteChange = (route) => {
     if (route === 'signout') {
