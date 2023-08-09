@@ -69,32 +69,39 @@ class App extends Component {
 
   onPictureSubmit = () => {
     this.setState({ imageUrl: this.state.input });
-  
-    // Send the image URL to your backend API endpoint using axios
-    axios.post('https://fr-backend-fz83.onrender.com/detect-face', {
-      imageUrl: this.state.input,
+
+    // Send the image URL to your backend API endpoint
+    fetch('https://fr-backend-fz83.onrender.com/detect-face', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        imageUrl: this.state.input,
+      }),
     })
-      .then(response => {
-        const result = response.data;
+      .then(response => response.json())
+      .then(result => {
         // Process the result and update the state or perform other actions
         // For example, you can call displayFaceBox() and update user entries
         if (result) {
-          axios.put('https://fr-backend-fz83.onrender.com/image', {
-            id: this.state.user.id,
-          })
-            .then(response => {
-              const count = response.data;
-              this.setState(prevState => ({
-                user: { ...prevState.user, entries: count },
-              }));
+          fetch('https://fr-backend-fz83.onrender.com/image', {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: this.state.user.id
             })
-            .catch(error => console.log('error', error));
+          })
+            .then(result => result.json())
+            .then(count => {
+              this.setState(Object.assign(this.state.user, { entries: count }));
+            })
+            .catch(console.log);
         }
         this.displayFaceBox(this.calculateFaceLocation(result));
       })
       .catch(error => console.log('error', error));
   };
-
 
   onRouteChange = (route) => {
     if (route === 'signout') {
