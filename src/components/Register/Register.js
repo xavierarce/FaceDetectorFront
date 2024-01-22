@@ -11,6 +11,7 @@ class Register extends React.Component {
       email: "",
       password: "",
       name: "",
+      isLoading: false,
     };
   }
 
@@ -25,7 +26,15 @@ class Register extends React.Component {
     this.setState({ password: event.target.value });
   };
 
+  setLoadingTrue = () => {
+    this.setState({ isLoading: true });
+  };
+  setLoadingFalse = () => {
+    this.setState({ isLoading: false });
+  };
+
   onSubmitSignIn = () => {
+    this.setLoadingTrue();
     const emailToSend = this.state.email;
     const passwordToSend = this.state.password;
     const nameToSend = this.state.name;
@@ -36,6 +45,10 @@ class Register extends React.Component {
         if (user.id) {
           this.props.loadUser(user);
           this.props.onRouteChange("home");
+          this.setLoadingFalse();
+        } else {
+          this.setLoadingFalse();
+          alert("Unable to register");
         }
       });
   };

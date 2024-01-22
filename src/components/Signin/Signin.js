@@ -1,5 +1,6 @@
 import React from "react";
 import { serverSignIn } from "../../API/serverFunctions";
+import LoadingSpinerLocal from "../LoadingSpinerLocal/LoadingSpinerLocal";
 // import './Signin.css'
 
 class Signin extends React.Component {
@@ -8,6 +9,7 @@ class Signin extends React.Component {
     this.state = {
       singInEmail: "",
       singInPassword: "",
+      isLoading: false,
     };
   }
 
@@ -20,6 +22,7 @@ class Signin extends React.Component {
   };
 
   onSubmitSignIn = () => {
+    this.setState({ isLoading: true });
     const emailToSend = this.state.singInEmail;
     const passwordToSend = this.state.singInPassword;
 
@@ -27,11 +30,18 @@ class Signin extends React.Component {
       .then((response) => response.json())
       .then((user) => {
         if (user.id) {
+          this.setState({ isLoading: false });
           this.props.loadUser(user);
           this.props.onRouteChange("home");
+        }else{
+          this.setState({ isLoading: false });
+          alert('Not able to log In')
         }
       })
-      .catch(() => alert("Invalid"));
+      .catch(() => {
+        this.setState({ isLoading: false });
+        alert("Invalid");
+      });
   };
 
   render() {
@@ -40,6 +50,7 @@ class Signin extends React.Component {
       <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
         <main className="pa4 black-80">
           <div className="measure  ">
+            {this.state.isLoading ? <LoadingSpinerLocal /> : null}
             <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
               <legend className="f3 fw6 ph0 mh0">Sign In</legend>
               <div className="mt3">

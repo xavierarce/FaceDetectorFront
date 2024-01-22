@@ -1,4 +1,5 @@
-const API_ADDRESS= 'https://hogarsegurosvr.onrender.com'
+// const API_ADDRESS= 'https://fr-backend-fz83.onrender.com'
+const API_ADDRESS= 'http://localhost:8000'
 
 export const serverPictureSubmit =(imageUrlToSend)=>{
   return fetch(`${API_ADDRESS}/detect-face`, {
